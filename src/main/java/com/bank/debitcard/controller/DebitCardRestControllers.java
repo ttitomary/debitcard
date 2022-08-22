@@ -38,16 +38,23 @@ public class DebitCardRestControllers {
                         log.info(responsePasive.toString());
                         return debitCardService.findBydebitCard(p.getDebitCardNumber())
                                 .flatMap(debitCards -> {
-                                    if(debitCards != null){
+                                    log.info("Obtener debit cards");
+                                    log.info(debitCards.toString());
+
+                                    if(!debitCards.isEmpty())
+                                    {
                                         boolean main = debitCards.stream().anyMatch(x->x.isMain() == true);
                                         String pasiveId = debitCards.stream().findFirst().get().getPasiveId();
-                                        if(main == p.isMain()){
+                                        if(main == p.isMain())
+                                        {
                                             return Mono.just(ResponseHandler.response("Main account already exists", HttpStatus.NOT_FOUND, null));
                                         }
-                                        else{
+                                        else
+                                        {
                                             return pasiveService.getPasive(pasiveId)
                                                     .flatMap(response -> {
-                                                        if(response.getData() != null){
+                                                        if(response.getData() != null)
+                                                        {
                                                             if(responsePasive.getData().getClientId() == response.getData().getClientId())
                                                                 return debitCardService.Create(p)
                                                                         .flatMap(debitCard -> Mono.just(ResponseHandler.response("Done", HttpStatus.OK, debitCard)));
@@ -59,11 +66,14 @@ public class DebitCardRestControllers {
                                                         });
                                         }
                                     }
-                                    else {
+                                    else
+                                    {
                                         return debitCardService.Create(p)
                                                 .flatMap(debitCard -> Mono.just(ResponseHandler.response("Done", HttpStatus.OK, debitCard)));
                                     }
                                 });
+
+
                     }
                     else
                         return Mono.just(ResponseHandler.response("Pasive not found", HttpStatus.NOT_FOUND, null));
@@ -114,7 +124,7 @@ public class DebitCardRestControllers {
                 .doFinally(fin -> log.info("[END] Delete Debit Card"));
     }
 
-    @GetMapping("/debit/{id}")
+    @GetMapping("/debit/{debitCardNumber}")
     public Mono<ResponseEntity<Object>> FindBydebitCard(@PathVariable String debitCardNumber) {
         log.info("[INI] Find by Debit Card");
         return debitCardService.findBydebitCard(debitCardNumber)
@@ -125,7 +135,7 @@ public class DebitCardRestControllers {
 
     }
 
-    @GetMapping("/mont/debit/{id}")
+    @GetMapping("/mont/debit/{debitCardNumber}")
     public Mono<ResponseEntity<Object>> GetMontdebitCard(@PathVariable String debitCardNumber) {
         log.info("[INI] Find by Debit Card");
         return debitCardService.findBydebitCard(debitCardNumber)

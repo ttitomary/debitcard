@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -56,6 +57,6 @@ public class DebitCardService implements IDebitCardService {
 
     @Override
     public Mono<List<DebitCard>> findBydebitCard(String debitCardNumber) {
-        return dao.findAll().filter(p -> p.getDebitCardNumber().equals(debitCardNumber)).collectList();
+        return dao.findAll().filter(p -> p.getDebitCardNumber().equals(debitCardNumber)).sort(Comparator.comparing(DebitCard::isMain)).collectList();
     }
 }
