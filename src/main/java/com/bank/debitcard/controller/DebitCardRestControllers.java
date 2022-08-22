@@ -125,7 +125,7 @@ public class DebitCardRestControllers {
 
     }
 
-    @GetMapping("/mont/{id}")
+    @GetMapping("/mont/debit/{id}")
     public Mono<ResponseEntity<Object>> GetMontdebitCard(@PathVariable String debitCardNumber) {
         log.info("[INI] Find by Debit Card");
         return debitCardService.findBydebitCard(debitCardNumber)
