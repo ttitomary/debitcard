@@ -35,8 +35,9 @@ public class DebitCardService implements IDebitCardService {
     public Mono<DebitCard> Update(String id, DebitCard debitCard) {
         return dao.existsById(id).flatMap(check ->
         {
-            if (check)
+            if (Boolean.TRUE.equals(check))
             {
+                debitCard.setId(id);
                 return dao.save(debitCard);
             }
             else
@@ -48,7 +49,7 @@ public class DebitCardService implements IDebitCardService {
     @Override
     public Mono<Object> Delete(String id) {
         return dao.existsById(id).flatMap(check -> {
-            if (check)
+            if (Boolean.TRUE.equals(check))
                 return dao.deleteById(id).then(Mono.just(true));
             else
                 return Mono.empty();

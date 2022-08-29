@@ -144,11 +144,14 @@ public class DebitCardRestControllers {
                             .filter(active -> active.isMain())
                             .findFirst();
 
+                    log.info(existMain.get().getPasiveId());
+
                     if(existMain.isPresent()){
                         return pasiveService.getPasive(existMain.get().getPasiveId())
                                 .flatMap(responsePasive -> {
+                                    log.info(responsePasive.toString());
                                     if(responsePasive.getData() != null){
-                                        return Mono.just(ResponseHandler.response("Done", HttpStatus.NO_CONTENT, responsePasive.getData().getMont()));
+                                        return Mono.just(ResponseHandler.response("Done", HttpStatus.OK, responsePasive.getData().getMont()));
                                     }
                                     else{
                                         return Mono.just(ResponseHandler.response("Not exists", HttpStatus.NO_CONTENT, null));

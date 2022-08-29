@@ -12,5 +12,4 @@ public class Pasive {
     private String clientId;
     private String pasivesType;
     private Float mont;
-    //private Date specificDay;
 }

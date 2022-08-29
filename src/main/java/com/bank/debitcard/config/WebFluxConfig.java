@@ -11,12 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 @Configuration
 @EnableWebFlux
-public class WebFluxConfig {
+public class WebFluxConfig implements WebFluxConfigurer {
     @Value("${app.module.pasive.service.url}")
     private String urlPasive;
 
